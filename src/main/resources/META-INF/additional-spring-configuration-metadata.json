@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "spring.cloud.config.enabled",
+      "type": "java.lang.String",
+      "description": "default: ein lokaler Spring Config Server wird auf Port 8888 kontaktiert."
+    },
+    {
+      "name": "sleuth.sampler.percentage",
+      "type": "java.lang.String",
+      "description": "Description for sleuth.sampler.percentage."
+    },
+    {
+      "name": "mail.sales",
+      "type": "java.lang.String",
+      "description": "Emailadresse des Vertriebs."
+    },
+    {
+      "name": "mail.from",
+      "type": "java.lang.String",
+      "description": "Eigene Emailadresse als Absender."
+    },
+    {
+      "name": "mail.port",
+      "type": "java.lang.String",
+      "description": "Port des Mailservers."
+    },
+    {
+      "name": "mail.host",
+      "type": "java.lang.String",
+      "description": "Rechnername des Mailservers."
+    },
+    {
+      "name": "server.httpsPort",
+      "type": "java.lang.String",
+      "description": "HTTPS-Port des Microservice."
+    }
+  ]
+}

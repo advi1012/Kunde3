@@ -1,0 +1,73 @@
+@startuml
+
+skinparam componentStyle uml2
+
+left to right direction
+
+package de.shop.kunde #DDDDDD {
+    [Router]
+
+    package rest <<boundary>> #FFFFFF {
+        [KundeHandler]
+        [KundeMultimediaHandler]
+    }
+
+    package service <<control>> #FFFFFF {
+        [KundeService]
+        [KundeMultimediaService]
+    }
+
+    package db <<control>> #FFFFFF {
+        [KundeRepository]
+    }
+
+    package mail <<control>> #FFFFFF {
+        [Mailer]
+    }
+
+    package entity <<entity>> #FFFFFF {
+        [Kunde]
+    }
+}
+
+cloud {
+    [Spring Data MongoDB]
+}
+
+database "hska (MongoDB)" {
+    [Collection kunde]
+}
+
+queue "Apache Kafka"
+
+node {
+    [Mailserver]
+}
+
+RESTClient ~~> [Router]
+[Router] ..> [KundeHandler]
+[Router] ..> [KundeMultimediaHandler]
+
+[KundeHandler] ..> [Kunde]
+[KundeHandler] --> [KundeService]
+[KundeMultimediaHandler] --> [KundeMultimediaService]
+[KundeService] .up.> [Kunde]
+
+[KundeService] --> [KundeRepository]
+[KundeRepository] ..> [Kunde]
+
+[KundeRepository] ~~> [Spring Data MongoDB]
+[KundeMultimediaService] ~~> [Spring Data MongoDB]
+[Spring Data MongoDB] ~~> [Collection kunde]
+
+[KundeService] --> [Mailer]
+[Mailer] .up.> [Kunde]
+[Mailer] ~~> [Apache Kafka]
+[Apache Kafka] ~~> [Mailserver]
+
+' [hidden] fuer nicht-existierende Beziehungen als Workaround fuer das Layout
+[KundeHandler] -[hidden]-> [Kunde]
+
+footer (c) Jürgen Zimmermann
+
+@enduml

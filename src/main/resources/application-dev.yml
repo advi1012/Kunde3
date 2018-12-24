@@ -1,0 +1,36 @@
+# Copyright (C) 2018 - present Juergen Zimmermann, Hochschule Karlsruhe
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+logging:
+  file: build/logs/application.log
+  level:
+    de.hska: TRACE
+    org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener: WARN
+    org.springframework.http.codec.json.Jackson2JsonEncoder: DEBUG
+    # org.springframework.security.core.SpringSecurityCoreVersion: ERROR
+    org.springframework.security.core.userdetails.User: ERROR
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: DEBUG
+    org.mongodb.driver.cluster: WARN
+    org.apache.kafka.clients.NetworkClient: ERROR
+    org.hibernate.validator.internal.xml.ValidationXmlParser: WARN
+    org.hibernate.validator.internal.xml.ValidationBootstrapParameters: WARN
+    org.junit.jupiter.engine.descriptor.TestInstanceLifecycleUtils: WARN
+    # org.springframework.data.mongodb.core.MongoTemplate
+    # org.springframework.cloud.sleuth
+
+kunde:
+  # SonarQube "Credentials should not be hard-coded"
+  password: p
+  passwordFalsch: Falsch

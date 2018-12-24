@@ -1,0 +1,347 @@
+# -----------------------------------------------------------------
+# C o n f i g   S e r v e r
+# -----------------------------------------------------------------
+
+### Konfigurationsdaten fuer das Profil "dev"
+https://{{config-host}}/kunde/dev
+Authorization: {{basic-auth-admin}}
+
+### REST-Schnittstelle vom Config-Server
+https://{{config-host}}/actuator
+Authorization: {{basic-auth-admin}}
+
+### Config-Server herunterfahren
+POST https://{{config-host}}/actuator/shutdown
+Authorization: {{basic-auth-admin}}
+
+# -----------------------------------------------------------------
+# R e g i s t r y   S e r v e r   (Beispiel 3)
+# -----------------------------------------------------------------
+
+### FIXME REST-Schnittstelle vom Registry-Server
+http://{{registry-host}}/actuator
+Authorization: {{basic-auth-admin}}
+
+### Registry-Server herunterfahren
+POST http://{{registry-host}}/actuator/shutdown
+Authorization: {{basic-auth-admin}}
+
+# -----------------------------------------------------------------
+# k u n d e
+# -----------------------------------------------------------------
+
+### Suche alle Kunden
+https://{{host}}
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+# ALPN: h2, http%2F1.1
+
+### Suche alle Kunden mit falschem Passwort: 401 (Unauthorized)
+https://{{host}}
+Authorization: {{basic-auth-admin-falsch}}
+ALPN: h2
+
+### Suche alle Kunden mit fehlenden Rechten: 403 (Forbidden)
+https://{{host}}
+Authorization: {{basic-auth-alpha1}}
+ALPN: h2
+
+### Suche mit vorhandener Kunde-ID
+https://{{host}}/00000000-0000-0000-0000-000000000001
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche mit ungueltiger Kunde-ID
+https://{{host}}/YYYYYYYY-YYYY-YYYY-YYYY-YYYYYYYYYYYY
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche mit nicht-vorhandener Kunde-ID
+https://{{host}}/99999999-9999-9999-9999-999999999999
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche mit falschem Passwort: 401 (Unauthorized)
+https://{{host}}/00000000-0000-0000-0000-000000000001
+Authorization: Basic {{basic-auth-admin-falsch}}
+ALPN: h2
+
+### Suche mit vorhandener Kunde-ID und ETag
+https://{{host}}/00000000-0000-0000-0000-000000000001
+If-None-Match: 0
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche mit vorhandenem Nachnamen
+https://{{host}}/?nachname=delta
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche mit vorhandener Email
+https://{{host}}/?email=alpha%40hska.edu
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche mit nicht-vorhandener Email
+https://{{host}}/?email=theo%40test.edu
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche Version zu vorhandener ID
+https://{{host}}/version/00000000-0000-0000-0000-000000000001
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Streaming mit allen Kunden
+https://{{host}}
+Accept: text/event-stream
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Einen neuen Kunden anlegen
+POST https://{{host}}
+Content-Type: application/json
+ALPN: h2
+
+< kunde-neu.json
+
+### Einen neuen Kunden mit ungueltigen Daten versuchen anzulegen
+POST https://{{host}}
+Content-Type: application/json
+ALPN: h2
+
+< kunde-neu-invalid.json
+
+### Einen Kunden mittels PUT aktualisieren
+PUT https://{{host}}/00000000-0000-0000-0000-000000000001
+If-Match: 0
+Content-Type: application/json
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+< kunde-1-put.json
+
+### Einen Kunden mittels PUT und ungueltigen Daten aktualisieren
+PUT https://{{host}}/00000000-0000-0000-0000-000000000001
+If-Match: 0
+Content-Type: application/json
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+< kunde-1-put-invalid.json
+
+### Einen Kunden mittels PUT und falschem Passwort aktualisieren: 401 (Unauthorized)
+PUT https://{{host}}/00000000-0000-0000-0000-000000000001
+If-Match: 0
+Content-Type: application/json
+Authorization: {{basic-auth-admin-falsch}}
+ALPN: h2
+
+< kunde-1-put.json
+
+### Zu einem vorhandenen Kunden ein PNG-Bild hochladen
+PUT https://{{host}}/multimedia/00000000-0000-0000-0000-000000000001
+Authorization: {{basic-auth-admin}}
+Content-Type: image/png
+
+< ./image.png
+
+### Zu einem vorhandenen Kunden ein JPEG-Bild hochladen
+PUT https://{{host}}/multimedia/00000000-0000-0000-0000-000000000001
+Authorization: {{basic-auth-admin}}
+Content-Type: image/jpeg
+
+< ./image.jpg
+
+### Zu einem vorhandenen Kunden ein Bild (binaer!!!) herunterladen
+GET https://{{host}}/multimedia/00000000-0000-0000-0000-000000000001
+Authorization: {{basic-auth-admin}}
+Accept: image/*
+
+### Zu einem vorhandenen Kunden ein Bild als Multipart hochladen
+### FIXME https://youtrack.jetbrains.com/issue/IDEA-187630
+PUT https://{{host}}/multimedia/00000000-0000-0000-0000-000000000001 HTTP/1.1
+Authorization: {{basic-auth-admin}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="image.png"; Content-Type="image/png"
+
+< ./image.png
+--boundary
+
+### Einen Kunden mittels PATCH aktualisieren
+PATCH https://{{host}}/00000000-0000-0000-0000-000000000001
+If-Match: 0
+Content-Type: application/json
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+[
+    { "op": "replace", "path": "/nachname", "value": "Neuername" },
+    { "op": "replace", "path": "/email", "value": "new.email@test.de" },
+    { "op": "add", "path": "/interessen", "value": "R" },
+    { "op": "remove", "path": "/interessen", "value": "L" }
+]
+
+### Einen Kunden mittels PATCH und ungueltigen Daten aktualisieren
+PATCH https://{{host}}/00000000-0000-0000-0000-000000000001
+If-Match: 0
+Content-Type: application/json
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+[
+  { "op": "replace", "path": "/email", "value": "emailungueltig@" }
+]
+
+### Einen Kunden mittels PATCH und falschem Passwort aktualisieren: 401 (Unauthorized)
+PATCH https://{{host}}/00000000-0000-0000-0000-000000000001
+If-Match: 0
+Content-Type: application/json
+Authorization: {{basic-auth-admin-falsch}}
+ALPN: h2
+
+[
+    { "op": "replace", "path": "/nachname", "value": "Neuername" },
+    { "op": "replace", "path": "/email", "value": "new.email@test.de" },
+    { "op": "add", "path": "/interessen", "value": "R" },
+    { "op": "remove", "path": "/interessen", "value": "L" }
+]
+
+### Einen Kunden mittels PATCH und fehlenden Rechten aktualisieren: 403 (Forbidden)
+PATCH https://{{host}}/00000000-0000-0000-0000-000000000001
+If-Match: 0
+Content-Type: application/json
+Authorization: {{basic-auth-alpha1}}
+ALPN: h2
+
+[
+    { "op": "replace", "path": "/nachname", "value": "Neuername" },
+    { "op": "replace", "path": "/email", "value": "new.email@test.de" },
+    { "op": "add", "path": "/interessen", "value": "R" },
+    { "op": "remove", "path": "/interessen", "value": "L" }
+]
+
+### Löschen mit vorhandener Kunde-ID
+DELETE https://{{host}}/00000000-0000-0000-0000-000000000004
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Löschen mit vorhandener Kunde-ID und falschem Passwort: 401 (Unauthorized)
+DELETE https://{{host}}/00000000-0000-0000-0000-000000000004
+Authorization: {{basic-auth-admin-falsch}}
+ALPN: h2
+
+### Löschen mit vorhandener Kunde-ID und fehlenden Rechten: 403 (Forbidden)
+DELETE https://{{host}}/00000000-0000-0000-0000-000000000004
+Authorization: {{basic-auth-alpha1}}
+ALPN: h2
+
+### Löschen mit vorhandener Email
+#DELETE https://{{host}}/?email=phi%40hska.cn
+#Authorization: {{basic-auth-admin}}
+#ALPN: h2
+
+# -----------------------------------------------------------------
+# S p r i n g   B a t c h (SWE)
+# -----------------------------------------------------------------
+
+### Suche Anzahl Kunden
+https://{{host}}/anzahl
+Accept: text/plain
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+# -----------------------------------------------------------------
+# P r a e f i x e   u n d   V e r s i o n e n (SWE)
+# -----------------------------------------------------------------
+
+### Suche Nachnamen mit Praefix
+https://{{host}}/nachname/a
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche Emailadressen mit Praefix
+https://{{host}}/email/al
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche Version zu Kunde-ID
+https://{{host}}/version/00000000-0000-0000-0000-000000000001
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+### Suche Nachnamen mit Praefix
+https://{{host}}/auth/rollen
+Authorization: {{basic-auth-admin}}
+ALPN: h2
+
+# -----------------------------------------------------------------
+# A c t u a t o r
+# -----------------------------------------------------------------
+
+### Uebersicht
+https://{{actuator}}
+Authorization: {{basic-auth-admin}}
+
+### Status (erfordert Client fuer MongoDB)
+https://{{actuator}}/info
+Authorization: {{basic-auth-admin}}
+
+### Features
+https://{{actuator}}/features
+Authorization: {{basic-auth-admin}}
+
+### Logger und Loglevel
+https://{{actuator}}/loggers
+Authorization: {{basic-auth-admin}}
+
+### Spring Beans
+https://{{actuator}}/beans
+Authorization: {{basic-auth-admin}}
+
+### Configuration Properties
+https://{{actuator}}/configprops
+Authorization: {{basic-auth-admin}}
+
+### Umgebung und Properties
+https://{{actuator}}/env
+Authorization: {{basic-auth-admin}}
+
+### Property server.port
+https://{{actuator}}/env/server.port
+Authorization: {{basic-auth-admin}}
+
+### Property server.ssl.protocol
+https://{{actuator}}/env/server.ssl.protocol
+Authorization: {{basic-auth-admin}}
+
+### Shutdown
+POST https://{{actuator}}/shutdown
+Authorization: {{basic-auth-admin}}
+Content-Type: application/json
+
+### Restart (nur Shutdown :-(
+POST https://{{actuator}}/restart
+Authorization: {{basic-auth-admin}}
+
+### Beispiel 3: Abfrage ueber den Status der Instanz beim Registry-Server (401 :-(
+http://{{host}}/service-registry/instance-status
+Authorization: {{basic-auth-admin}}
+
+###
+
+# -----------------------------------------------------------------
+# O P T I O N S, H E A D
+# -----------------------------------------------------------------
+
+#OPTIONS https://{{host}}
+#Authorization: {{basic-auth-admin}}
+#ALPN: h2
+
+###
+
+#HEAD https://{{host}}
+#Authorization: {{basic-auth-admin}}
+#ALPN: h2

@@ -1,0 +1,99 @@
+= Entwicklerhandbuch
+Jürgen Zimmermann <Juergen.Zimmermann@HS-Karlsruhe.de>
+:doctype: book
+:toc: left
+:sectanchors:
+:sectlinks:
+:sectnums:
+:source-highlighter: coderay
+:imagesdir: ../images
+:icons: font
+// :iconsdir: ../../icons
+// fuer Konvertierung nach PDF
+:pdf-page-size: A4
+
+// https://github.com/asciidoctor/asciidoctorj
+// https://github.com/asciidoctor/asciidoctor-diagram
+// http://de.plantuml.com/classes.html
+// http://de.plantuml.com/component.html
+// https://github.com/olivergierke/asciidoctor-plantuml
+
+IMPORTANT: Copyright (C) 2015 - present Jürgen Zimmermann, Hochschule Karlsruhe. +
+           Free use of this software is granted under the terms of the
+           GNU General Public License (GPL) v3. +
+           For the full text of the license, see the http://www.gnu.org/licenses/gpl-3.0.html[license] file.
+
+== Der Microservice Kunde
+
+=== Der Microservice im Überblick
+
+bla bla
+
+.Use Cases für den Microservice "kunde"
+image::kunde.uc.png[]
+
+//.Use Cases für den Microservice "kunde"
+//plantuml::../../src/main/kotlin/kunde.uc.puml[format="png"]
+
+//.Use Cases für den Microservice "kunde"
+//["plantuml", "kunde.uc", "png"]
+//--
+//include::../../src/main/kotlin/kunde.uc.puml[format="png"]
+//--
+
+bla bla
+
+.Komponenten des Microservice "kunde"
+image::kunde.comp.png[]
+
+=== Die REST-Schnittstelle
+
+bla bla
+
+.Die Handler-Klasse "KundeHandler" innerhalb der REST-Schnittstelle
+image::KundeHandler.png[]
+
+=== Der Anwendungskern
+
+bla bla
+
+.Die Service-Klasse "KundeService" im Anwendungskern
+image::KundeService.png[]
+
+=== Die Entity-Klassen
+
+bla bla
+
+.Die Entity-Klasse "Kunde" für Kundendaten
+image::Kunde.png[]
+
+== Programmierrichtlinien
+
+TIP: Als Studierende/r sollte man sich frühzeitig an Programmierrichtlinien
+     gewöhnen. Das hinterlässt im späteren Praxissemester einen professionellen Eindruck.
+
+=== Kotlin
+
+Für die Entwicklung mit *Kotlin* sind die Konventionen von JetBrains empfehlenswert:
+https://kotlinlang.org/docs/reference/coding-conventions.html
+
+=== TypeScript und JavaScript
+
+Für die Programmierung mit *TypeScript* und *JavaScript* wird folgende
+Styleguides empfehlenswert:
+
+[horizontal]
+_Microsoft_:: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
+_Angular_:: https://angular.io/docs/ts/latest/guide/style-guide.html
+_React_:: https://github.com/airbnb/javascript/tree/master/react
+
+=== Java
+
+Für die Programmierung mit *Java* sind folgende Styleguides empfehlenswert:
+
+[horizontal]
+_Andreas Lundblad_:: http://cr.openjdk.java.net/~alundblad/styleguide
+_Spring_:: https://github.com/spring-projects/spring-framework/wiki/Spring-Framework-Code-Style
+_Google_:: https://google.github.io/styleguide/javaguide.html
+_Twitter_:: https://github.com/twitter/commons/blob/master/src/java/com/twitter/common/styleguide.md
+_Mozilla_:: https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Coding_Style#Java_practices

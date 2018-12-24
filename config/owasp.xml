@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+
+<!--
+ Copyright (C) 2016 - present Juergen Zimmermann, Hochschule Karlsruhe
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<suppressions
+        xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.2.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.2.xsd ">
+    <!-- Micrometer fuer Actuator -->
+    <suppress>
+        <notes><![CDATA[file name: micrometer-core-1.1.0.jar]]></notes>
+        <gav regex="true">^io\.micrometer:micrometer-core:.*$</gav>
+        <cpe>cpe:/a:git:git</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: micrometer-core-1.1.0.jar]]></notes>
+        <gav regex="true">^io\.micrometer:micrometer-core:.*$</gav>
+        <cpe>cpe:/a:git_project:git</cpe>
+    </suppress>
+
+    <!-- Eureka Client -->
+    <suppress>
+        <notes><![CDATA[file name: netflix-eventbus-0.3.0.jar]]></notes>
+        <gav regex="true">^com\.netflix\.netflix-commons:netflix-eventbus:.*$</gav>
+        <cpe>cpe:/a:git_project:git</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: netflix-eventbus-0.3.0.jar]]></notes>
+        <gav regex="true">^com\.netflix\.netflix-commons:netflix-eventbus:.*$</gav>
+        <cpe>cpe:/a:git:git</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: netflix-infix-0.3.0.jar]]></notes>
+        <gav regex="true">^com\.netflix\.netflix-commons:netflix-infix:.*$</gav>
+        <cpe>cpe:/a:git_project:git</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: netflix-infix-0.3.0.jar]]></notes>
+        <gav regex="true">^com\.netflix\.netflix-commons:netflix-infix:.*$</gav>
+        <cpe>cpe:/a:git:git</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: netflix-commons-util-0.3.0.jar]]></notes>
+        <gav regex="true">^com\.netflix\.netflix-commons:netflix-commons-util:.*$</gav>
+        <cpe>cpe:/a:git_project:git</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: netflix-commons-util-0.3.0.jar]]></notes>
+        <gav regex="true">^com\.netflix\.netflix-commons:netflix-commons-util:.*$</gav>
+        <cpe>cpe:/a:git:git</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: jersey-apache-client4-1.19.1.jar]]></notes>
+        <gav regex="true">^com\.sun\.jersey\.contribs:jersey-apache-client4:.*$</gav>
+        <cve>CVE-2006-0550</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: guava-15.0.jar]]></notes>
+        <gav regex="true">^com\.google\.guava:guava:.*$</gav>
+        <cpe>cpe:/a:google:guava</cpe>
+    </suppress>
+
+    <!-- MongoDB -->
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-starter-data-mongodb-reactive-2.1.0.RELEASE.jar]]></notes>
+        <gav regex="true">^org\.springframework\.boot:spring-boot-starter-data-mongodb-reactive:.*$</gav>
+        <cpe>cpe:/a:mongodb:mongodb</cpe>
+    </suppress>
+
+    <!-- Spring Cloud Stream -->
+    <suppress>
+        <notes><![CDATA[file name: spring-tuple-1.0.0.RELEASE.jar]]></notes>
+        <gav regex="true">^org\.springframework:spring-tuple:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-tuple-1.0.0.RELEASE.jar]]></notes>
+        <gav regex="true">^org\.springframework:spring-tuple:.*$</gav>
+        <cpe>cpe:/a:vmware:springsource_spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-tuple-1.0.0.RELEASE.jar]]></notes>
+        <gav regex="true">^org\.springframework:spring-tuple:.*$</gav>
+        <cpe>cpe:/a:pivotal:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-tuple-1.0.0.RELEASE.jar]]></notes>
+        <gav regex="true">^org\.springframework:spring-tuple:.*$</gav>
+        <cpe>cpe:/a:springsource:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-integration-kafka-3.1.0.RELEASE.jar]]></notes>
+        <gav regex="true">^org\.springframework\.integration:spring-integration-kafka:.*$</gav>
+        <cpe>cpe:/a:pivotal:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-integration-kafka-3.1.0.RELEASE.jar]]></notes>
+        <gav regex="true">^org\.springframework\.integration:spring-integration-kafka:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+
+</suppressions>

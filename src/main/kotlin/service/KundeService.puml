@@ -1,0 +1,75 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam componentStyle uml2
+
+package reactor.core.publisher {
+    abstract class Mono {
+    }
+
+    abstract class Flux {
+    }
+}
+
+package org.springframework {
+    package data {
+        package repository.reactive {
+            interface ReactiveCrudRepository {
+            }
+        }
+
+        package mongodb.core {
+            class ReactiveMongoTemplate {
+            }
+        }
+    }
+
+    package security.core {
+        interface Authentication {
+        }
+    }
+}
+
+package de.hska.kunde {
+    package config.security {
+        class CustomUserDetailsService << control >> {
+        }
+    }
+
+    package entity {
+        class Kunde << entity >> {
+        }
+    }
+
+    package service #DDDDDD {
+        KundeRepository ..|> ReactiveCrudRepository
+        KundeService --> "1" KundeRepository
+        KundeService --> "1" CustomUserDetailsService
+        KundeService --> "1" ReactiveMongoTemplate
+        KundeService ..> Kunde
+        KundeService ..> Flux
+        KundeService ..> Mono
+        KundeService ..> Authentication
+
+        interface KundeRepository {
+        }
+
+        class KundeService << control >> << @Service >> << @Validated >> << @CacheConfig >> {
+            + @Cacheable(key = "#id") findById(id: String): Mono<Kunde>
+            + find(queryParams: MultiValueMap<String, String>): Flux<Kunde>
+            + save(@Valid kunde: Kunde): Mono<Kunde>
+            + @CacheEvict(key = "#id") update(@Valid kunde: Kunde, id: String, version: String): Mono<Kunde>
+            + @CacheEvict(key = "#id") deleteById(id: String): Mono<Kunde>
+        }
+
+        ' [hidden] fuer nicht-existierende Beziehungen als Workaround fuer das Layout
+        KundeRepository -[hidden]-> Flux
+    }
+}
+
+hide empty members
+hide empty methods
+hide empty fields
+
+footer (c) Jürgen Zimmermann
+
+@enduml

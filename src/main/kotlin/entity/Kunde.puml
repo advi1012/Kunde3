@@ -1,0 +1,77 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam componentStyle uml2
+' skinparam monochrome true
+
+package org.springframework.security.core.userdetails {
+    interface UserDetails {
+    }
+    class User {
+    }
+}
+package de.hska.kunde {
+    package config.security {
+        UserDetails <|-- CustomUserDetails
+        User <|-- CustomUserDetails
+        class CustomUserDetails {
+        }
+    }
+    package entity #DDDDDD {
+        Kunde *--> "1" Umsatz
+        Kunde *--> "1" Adresse
+        Kunde *--> "1" GeschlechtType
+        Kunde *--> "1" FamilienstandType
+        Kunde *--> "*" InteresseType
+        Kunde *--> "1" CustomUserDetails
+
+        class Umsatz {
+            - betrag: BigDecimal
+            - waehrung: Currency
+        }
+
+        class Adresse {
+            - @Pattern plz: String
+            - ort: String
+        }
+
+        enum GeschlechtType {
+            MAENNLICH
+            WEIBLICH
+        }
+
+        enum FamilienstandType {
+            LEDIG
+            VERHEIRATET
+            GESCHIEDEN
+            VERWITWET
+        }
+
+        enum InteresseType {
+            SPORT
+            LESEN
+            REISEN
+        }
+
+        class Kunde << entity >> << @Document >> << @TypeAlias("Kunde") >> {
+            - @Pattern @JsonIgnore id : String
+            - @Version @JsonIgnore version : Int
+            - @Pattern @NotEmpty @Indexed nachname : String
+            - @Email @Indexed email : String
+            - @Min @Max kategorie: int
+            - newsletter : boolean
+            - @Past geburtsdatum: LocalDate
+            - homepage: URL
+            - @Indexed username: String
+            - @CreatedDate @JsonIgnore erzeugt: LocalDateTime
+            - @LastModifiedDate @JsonIgnore aktualisiert: LocalDateTime
+        }
+    }
+}
+
+hide empty members
+hide empty methods
+hide empty fields
+
+footer (c) Jürgen Zimmermann
+
+@enduml

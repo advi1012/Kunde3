@@ -1,0 +1,75 @@
+#!groovy
+pipeline {
+    agent any
+
+    //options {
+    //    buildDiscarder(logRotator(numToKeepStr: '10'))
+    //}
+
+    stages {
+        // Logisch-zusammengehoeriger Abschnitt der Pipeline:
+        // zur spaeteren Visualisierung
+        stage('Init') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        error 'Unix-Varianten werden nicht unterstuetzt'
+                    }
+                }
+                echo "Running ${env.JOB_NAME} #${env.BUILD_ID}"
+                deleteDir()
+            }
+        }
+        stage('Compile') {
+            steps {
+                // Benannte Argumente statt Funktionsaufruf mit Klammern
+                git url: 'file:///C:/Zimmermann/jenkins-git-upstream/kunde', branch: 'master', poll: true
+                // Kurzform fuer: bat([script: '...'])
+                bat './gradlew clean compileTestKotlin'
+            }
+        }
+        stage('Test, Build und Codeanalyse') {
+            steps {
+                parallel(
+                    'Test': {
+                        bat './gradlew test --build-cache'
+                    },
+                    'Archiv': {
+                        bat './gradlew assemble --build-cache'
+                    },
+                    'Codeanalyse': {
+                        bat './gradlew detektCheck lintKotlin --build-cache'
+                    },
+                    'OWASP': {
+                        bat './gradlew dependencyCheckAnalyze --info'
+                    },
+
+                    //'Dokka': {
+                    //    bat './gradlew dokka'
+                    //    // javadocArchiver javadocDir: 'build/docs/javadoc'
+                    //    step([$class: 'JavadocArchiver', javadocDir: 'build/docs/javadoc'])
+                    //}
+                )
+            }
+            post {
+                always {
+                    junit 'build/test-results/junit-platform/TEST-junit-jupiter.xml'
+                    // https://issues.jenkins-ci.org/browse/JENKINS-46158
+                    // https://wiki.jenkins.io/display/JENKINS/Static+Analysis+in+Pipelines
+                    checkstyle pattern: 'build/reports/detekt/detekt-checkstyle.xml, build/reports/ktlint/main-lint.xml, build/reports/ktlint/test-lint.xml'
+                    // publishHTML target: [
+                    //     allowMissing: false,
+                    //     alwaysLinkToLastBuild: false,
+                    //     keepAll: true,
+                    //     reportDir: 'build/reports',
+                    //     reportFiles: 'dependency-check-report.html',
+                    //     reportName: 'OWASP Report'
+                    // ]
+                }
+                success {
+                    archive 'build/libs/kunde.jar'
+                }
+            }
+        }
+    }
+}
